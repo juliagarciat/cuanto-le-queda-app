@@ -1,16 +1,39 @@
-# React + Vite
+# ¿Cuánto me queda?
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Aplicación web (React + Vite) para consultar **cuánto queda hasta el próximo autobús** en Granada y su área metropolitana, con datos en tiempo real.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `npm run dev` — servidor de desarrollo.
+- `npm run build` — build de producción (Vite + Tailwind CSS).
+- `npm run preview` — sirve el build de producción.
+- `npm run lint` — linter (oxlint).
 
-## React Compiler
+## Secciones
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Favoritos** — paradas guardadas en el navegador.
+- **Buscar parada** — catálogo unificado de paradas de ambas redes; también se puede consultar por número aunque no esté en el catálogo.
+- **Mapa** — paradas y autobuses en ruta (Leaflet), centrado en la parada seleccionada o en tu posición.
+- **Cerca** — las 20 paradas más próximas a tu ubicación (geolocalización).
+- **Avisos** — cortes, obras y cambios de horario del Consorcio.
+- **Detalle de parada** — próximos autobuses con la cuenta regresiva, posición en vivo y avisos de las líneas que paran ahí.
 
-## Expanding the Oxlint configuration
+## Datos
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Dos fuentes se combinan bajo una fachada única (`src/api`):
+
+- **Urbano** (`Transportes Rober`, vía MovGR): paradas y tiempos reales.
+- **Metropolitano** (`Consorcio Metropolitano`, vía MovGR y API CTAN): tiempos, horarios y posición en ruta; si MovGR falla se usan los horarios de la API CTAN.
+
+Los catálogos y avisos se cachean en `localStorage` con caducidad. Los estilos utilitarios provienen de Tailwind CSS v4, configurado en `src/index.css`.
+
+## Estructura
+
+```
+src/
+  api/         fachada de datos y adaptadores por red
+  components/  componentes de UI (incluido el mapa con Leaflet)
+  hooks/       estados reutilizables (tiempos, avisos, favoritos…)
+  utils/       formateo, búsqueda, geolocalización y persistencia
+  views/       pantallas de la aplicación
+```
