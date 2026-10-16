@@ -4,7 +4,7 @@ Aplicación web (React + Vite) para consultar **cuánto queda hasta el próximo 
 
 ## Scripts
 
-- `npm run dev` — servidor de desarrollo.
+- `npm run dev` — servidor de desarrollo. Incluye un mock del backend de datos (ver [Desarrollo](#desarrollo)).
 - `npm run build` — build de producción (Vite + Tailwind CSS).
 - `npm run preview` — sirve el build de producción.
 - `npm run lint` — linter (oxlint).
@@ -26,6 +26,18 @@ Dos fuentes se combinan bajo una fachada única (`src/api`):
 - **Metropolitano** (`Consorcio Metropolitano`, vía MovGR y API CTAN): tiempos, horarios y posición en ruta; si MovGR falla se usan los horarios de la API CTAN.
 
 Los catálogos y avisos se cachean en `localStorage` con caducidad. Los estilos utilitarios provienen de Tailwind CSS v4, configurado en `src/index.css`.
+
+## Desarrollo
+
+`npm run dev` registra además un mock del backend de datos (`dev/mockApi.js`), de modo que la
+app pueda probarse sin montar un servidor real. Responde a las rutas que consume `src/api/`:
+
+- `/api/movgr/bus/paradas` y `/api/movgr/bus/llegadas/:id` — red urbana.
+- `/api/movgr/ctagr/llegadas/:id` — red metropolitana, con posición de vehículos.
+- `/api/ctan/paradas` y `/api/ctan/paradas/:id/servicios` — catálogo y horarios (respaldo).
+- `/api/ctan/noticias` y `/api/ctan/lineas` — avisos e identificadores de líneas.
+
+El plugin solo se registra en el servidor de desarrollo, nunca en el build de producción.
 
 ## Estructura
 
